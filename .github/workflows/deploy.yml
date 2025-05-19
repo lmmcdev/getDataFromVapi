@@ -21,6 +21,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_9BAD547795CA4FC8901FD13067A5241A }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_3DD8B696D45645B49DCC81BE51FD8531 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_CCDF4567B0AF4600AC2D9B8DF5409A57 }}
+          
       - name: Deploy to Azure Function App
         uses: azure/functions-action@v1
         with:
