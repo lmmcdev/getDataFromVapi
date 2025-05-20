@@ -34,7 +34,7 @@ app.http('getDataFromVapi', {
       const now = new Date();
       await sql.connect(config.connectionString);
       await sql.query`INSERT INTO tickets (title, description, status, created_at, user_email, user_phone, ticket_source, url_audio) 
-                      VALUES (${title}, ${description}, "New", ${now}, ${user_email}, ${user_phone}, "Voice", ${url_audio})`;
+                      VALUES (${title}, ${description}, 'New', ${now}, ${user_email}, ${user_phone}, 'Voice', ${url_audio})`;
       return {
         status: 200,
         body: 'New ticket created',
