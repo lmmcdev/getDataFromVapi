@@ -26,7 +26,7 @@ app.http('getDataFromVapi', {
       };
     }
 
-    const config = {
+    /*const config = {
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       server: process.env.DB_SERVER,
@@ -35,10 +35,14 @@ app.http('getDataFromVapi', {
         encrypt: true, // requerido por Azure
         trustServerCertificate: false,
       },
+    };*/
+
+    const config = {
+      connectionString: process.env["SQL_CONNECTION_STRING"]
     };
 
     try {
-      await sql.connect(config);
+      await sql.connect(config.connectionString);
       await sql.query`INSERT INTO agents (name, email) VALUES (${nombre}, ${correo})`;
       return {
         status: 200,
