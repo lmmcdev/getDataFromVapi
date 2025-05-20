@@ -17,42 +17,33 @@ app.http('getDataFromVapi', {
       };
     }
 
-    const { nombre, correo } = body;
+    const { title, description, user_email, user_phone, url_audio } = body;
 
-    if (!nombre || !correo) {
+    if (!user_email) {
       return {
         status: 400,
-        body: 'Faltan parámetros requeridos: nombre y correo',
+        body: 'Need to provide user email',
       };
     }
-
-    /*const config = {
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      server: process.env.DB_SERVER,
-      database: process.env.DB_NAME,
-      options: {
-        encrypt: true, // requerido por Azure
-        trustServerCertificate: false,
-      },
-    };*/
 
     const config = {
       connectionString: process.env["SQL_CONNECTION_STRING"]
     };
 
     try {
+      const now = new Date();
       await sql.connect(config.connectionString);
-      await sql.query`INSERT INTO agents (name, email) VALUES (${nombre}, ${correo})`;
+      await sql.query`INSERT INTO tickets (title, description, status, created_at, user_email, user_phone, ticket_source, url_audio) 
+                      VALUES (${title}, ${description}, "New", ${now}, ${user_email}, ${user_phone}, "Voice", ${url_audio})`;
       return {
         status: 200,
-        body: 'Datos insertados correctamente',
+        body: 'New ticket created',
       };
     } catch (error) {
-      console.log('Error al insertar en SQL:', error);
+      console.log('There is an error in SQL:', error);
       return {
         status: 500,
-        body: `Error al insertar datos en la base de datos ${error}`,
+        body: `Error inserting data in SQL: ${error}`,
       };
     }
   },
